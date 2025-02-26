@@ -1,32 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useQuery } from '@tanstack/react-query'
+
+import { HeroTitle } from '@/components/HeroTitle'
+import { NewsGrid } from '@/components/NewsGrid'
+import { Input } from '@/components/ui/input'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { getNews } from "@/services/newsapi.service"
+import { SelectSource } from './components/SelectSource'
 import { Button } from './components/ui/button'
-import viteLogo from '/vite.svg'
+import { DateRangePicker } from './components/ui/date-range-picker'
+
 
 function App() {
-    const [count, setCount] = useState(0)
+    const { data, isFetching, isLoading } = useQuery({ queryKey: ['news'], queryFn: getNews })
 
     return (
-        <>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <Button onClick={() => setCount((count) => count + 1)}>count is {count}</Button>
-                <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-            </p>
-        </>
+        <main>
+            <HeroTitle className='mb-40' />
+            <section className='flex items-center justify-between gap-20 container mx-auto mb-10'>
+                <Input placeholder='Search by keyword...' />
+                <div className='flex items-center gap-5'>
+                    <Select>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select a Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Categories</SelectLabel>
+                                <SelectItem value="business">Business</SelectItem>
+                                <SelectItem value="entertainment">Entertainment</SelectItem>
+                                <SelectItem value="general">General</SelectItem>
+                                <SelectItem value="health">Health</SelectItem>
+                                <SelectItem value="science">Science</SelectItem>
+                                <SelectItem value="sports">Sports</SelectItem>
+                                <SelectItem value="technology">Technology</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <SelectSource />
+                    <DateRangePicker />
+                    <Button>Search</Button>
+                </div>
+
+            </section>
+            <NewsGrid articles={data?.articles} isLoading={isFetching || isLoading} />
+        </main>
     )
 }
 
