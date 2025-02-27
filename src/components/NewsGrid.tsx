@@ -7,9 +7,10 @@ const SKELETON_LIST = Array.from({ length: 9 }, (_, index) => index);
 interface Props {
     isLoading: boolean;
     articles: NewsapiArticle[] | undefined;
+    onSelectArticle: (article: NewsapiArticle) => void
 }
 
-export const NewsGrid = ({ isLoading, articles }: Props) => (
+export const NewsGrid = ({ isLoading, articles, onSelectArticle}: Props) => (
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 container mx-auto pb-10">
         {isLoading ? (
             SKELETON_LIST.map((index) => (
@@ -23,7 +24,7 @@ export const NewsGrid = ({ isLoading, articles }: Props) => (
                 </div>
             ))
         ) : (
-            articles?.map(({ title, source, urlToImage, publishedAt }) => (
+            articles?.map(({ title, source, urlToImage, publishedAt, ...rest }) => (
                 <PreviewNew
                     key={title}
                     imageAlt={`Image for article: ${title}`}
@@ -31,6 +32,7 @@ export const NewsGrid = ({ isLoading, articles }: Props) => (
                     imageSrc={urlToImage}
                     source={source.name}
                     date={publishedAt}
+                    onClick={() => onSelectArticle({ title, source, urlToImage, publishedAt, ...rest })}
                 />
             ))
         )}

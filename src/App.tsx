@@ -1,7 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
+import { ArticleDrawer } from '@/components/ArticleDrawer'
 import { HeroTitle } from '@/components/HeroTitle'
 import { NewsGrid } from '@/components/NewsGrid'
+import { SelectSource } from '@/components/SelectSource'
+import { Button } from '@/components/ui/button'
+import { DateRangePicker } from '@/components/ui/date-range-picker'
+import { Drawer } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
 import {
     Select,
@@ -12,15 +18,19 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { NewsapiArticle } from '@/models/news.interfaces'
 import { getNews } from "@/services/newsapi.service"
-import { SelectSource } from './components/SelectSource'
-import { Button } from './components/ui/button'
-import { DateRangePicker } from './components/ui/date-range-picker'
 
 
 function App() {
-    const { data, isFetching, isLoading } = useQuery({ queryKey: ['news'], queryFn: getNews })
+    const [articleSelected, setArticleSelected]= useState<NewsapiArticle>()
 
+    const { data, isFetching, isLoading } = useQuery({
+        queryKey: ['news'],
+        queryFn: getNews
+    })
+
+    const handleSelectArticle = (article: NewsapiArticle) => setArticleSelected(article)
     return (
         <main>
             <HeroTitle className='mb-40' />
@@ -48,9 +58,15 @@ function App() {
                     <DateRangePicker />
                     <Button>Search</Button>
                 </div>
-
             </section>
-            <NewsGrid articles={data?.articles} isLoading={isFetching || isLoading} />
+            <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
+                <NewsGrid
+                    articles={data?.articles}
+                    isLoading={isFetching || isLoading}
+                    onSelectArticle={handleSelectArticle}
+                />
+                <ArticleDrawer articleSelected={articleSelected} />
+            </Drawer>
         </main>
     )
 }

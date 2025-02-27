@@ -1,4 +1,7 @@
+import { formatDate } from "@/lib/utils";
 import { PreviewHeader } from "./PreviewHeader";
+import { Badge } from "./ui/badge";
+import { DrawerTrigger } from "./ui/drawer";
 
 type Props = {
     imageSrc: string | null;
@@ -6,13 +9,14 @@ type Props = {
     title: string;
     source: string;
     date: string;
+    onClick: VoidFunction
 }
 
-export const PreviewNew = ({ imageSrc, imageAlt, title, source, date }: Props) => {
-    return (
-        <article className="flex flex-col justify-between p-4 rounded-lg bg-neutral-100 h-60 text-neutral-600">
-            <PreviewHeader />
-            <main className="group relative grow flex items-center justify-center">
+export const PreviewNew = ({ imageSrc, imageAlt, title, source, date, onClick }: Props) => (
+    <article className="flex flex-col justify-between p-4 rounded-lg bg-neutral-100 h-60 text-neutral-600">
+        <PreviewHeader />
+        <DrawerTrigger asChild>
+            <main role="button" onClick={onClick} className="group relative grow flex items-center justify-center cursor-pointer">
                 <h2 className="text-2xl text-center font-medium text-balance px-4 line-clamp-2">{title}</h2>
                 {imageSrc && (
                     <img
@@ -22,10 +26,10 @@ export const PreviewNew = ({ imageSrc, imageAlt, title, source, date }: Props) =
                     />
                 )}
             </main>
-            <footer className="flex justify-between items-center">
-                <span>{source}</span>
-                <span>{date}</span>
-            </footer>
-        </article>
-    )
-}
+        </DrawerTrigger>
+        <footer className="flex justify-between items-center">
+            <Badge variant="outline">{source}</Badge>
+            <Badge variant="outline">{formatDate(date)}</Badge>
+        </footer>
+    </article>
+)
