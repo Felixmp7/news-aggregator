@@ -22,7 +22,6 @@ export function ArticleDrawer({ articleSelected }: Props) {
     return (
         <DrawerContent className="px-8 pb-8">
             <main className="grid grid-cols-2 gap-10 pt-8">
-
                 <img
                     src={articleSelected?.urlToImage ?? defaultImageSvg}
                     alt={articleSelected?.title}
@@ -36,7 +35,7 @@ export function ArticleDrawer({ articleSelected }: Props) {
                         href={articleSelected?.url}
                         className="ml-auto flex text-sm items-center gap-2 font-medium text-neutral-500 hover:text-indigo-800 hover:underline" target="_blank" rel="noreferrer"
                     >
-                            continue reading
+                        continue reading
                         <ExternalLink className="size-4" />
                     </a>
                     <div className="text-neutral-700 text-sm mt-auto">
