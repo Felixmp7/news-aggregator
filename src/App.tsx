@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { ArticleDrawer } from '@/components/ArticleDrawer'
 import { HeroTitle } from '@/components/HeroTitle'
 import { NewsGrid } from '@/components/NewsGrid'
@@ -8,67 +6,27 @@ import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Drawer } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
-import { useDateRangePicker } from '@/hooks/useDateRangePicker'
-import { useQuery } from '@/hooks/useQuery'
-import { useUrlSearchParams } from '@/hooks/useUrlSearchParams'
-import { getDataFromNewsApiSource } from "@/services/newsapi.service"
-import type { Article, Source } from './models/news-aggregator.types'
-import { getDataFromNYTimesSource } from './services/new-york-times.service'
-import { getDataFromTheGuardiansApiSource } from './services/the-guardian.service'
+import { useNewsAggregator } from '@/hooks/useNewsAggregator'
 
 
-function App() {
-    const [articleSelected, setArticleSelected]= useState<Article>()
-    const [keywordValues, setKeywordValues]= useState('')
-    const [category, setCategory] = useState('')
-    const [sourceSelected, setSourceSelected] = useState<Source>('news-api')
-
-    const { dateRange, onChangeRange } = useDateRangePicker();
-    const { search } = useUrlSearchParams({
-        keywords: keywordValues,
-        source: sourceSelected,
-        category: category,
-        dateRange: dateRange
-    });
+export const App = () => {
     const {
-        data: newsData,
-        isLoading: isLoadingNewsApi,
-        fetch: fetchNewsApi
-    } = useQuery(getDataFromNewsApiSource)
-
-    const {
-        data: guardianData,
-        isLoading: isLoadingGuardian,
-        fetch: fetchGuardians
-    } = useQuery(getDataFromTheGuardiansApiSource)
-
-    const {
-        data: nyTimesData,
-        isLoading: isLoadingNYTimes,
-        fetch: fetchNYTimes
-    } = useQuery(getDataFromNYTimesSource)
-
-    const handleClickSearch = () => {
-        search();
-        if (sourceSelected === 'news-api') fetchNewsApi()
-        if (sourceSelected === 'guardian') fetchGuardians()
-        if (sourceSelected === 'new-york-times') fetchNYTimes()
-    }
-
-    const handleOnChangeSource = (source: Source) => setSourceSelected(source)
-
-    const handleChangeKeywords = (keywords: string) => setKeywordValues(keywords)
-    const onChangeCategory = (category: string) => setCategory(category)
-
-    const handleSelectArticle = (article: Article) => setArticleSelected(article)
-
-    const data = {
-        'news-api': newsData?.articles,
-        'guardian': guardianData?.articles,
-        'new-york-times': nyTimesData?.articles
-    }
-
-    const articles = data[sourceSelected] ?? []
+        sourceSelected,
+        keywordValues,
+        category,
+        articleSelected,
+        articles,
+        dateRange,
+        isLoadingNewsApi,
+        isLoadingGuardian,
+        isLoadingNYTimes,
+        handleChangeRange,
+        handleOnChangeSource,
+        handleChangeKeywords,
+        handleChangeCategory,
+        handleClickSearch,
+        handleSelectArticle
+    } = useNewsAggregator()
 
     return (
         <main className='container mx-auto px-5'>
@@ -91,17 +49,21 @@ function App() {
                     placeholder='Type a category or section'
                     className='w-full xl:w-[300px]'
                     value={category ?? ''}
-                    onChange={(event) => onChangeCategory(event.target.value)}
+                    onChange={(event) => handleChangeCategory(event.target.value)}
                 />
-                <DateRangePicker className='col-span-1 sm:col-span-2 w-full xl:col-span-1 xl:w-[300px]' date={dateRange} onChangeRange={onChangeRange} />
+                <DateRangePicker
+                    className='col-span-1 sm:col-span-2 w-full xl:col-span-1 xl:w-[300px]'
+                    date={dateRange}
+                    onChangeRange={handleChangeRange}
+                />
                 <Button
                     className='xl:ml-auto'
                     onClick={handleClickSearch}
                 >
-                            Search
+                    Search
                 </Button>
             </section>
-            <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
+            <Drawer open={!!articleSelected} onClose={handleSelectArticle}>
                 <NewsGrid
                     articles={articles}
                     isLoading={isLoadingNewsApi || isLoadingGuardian || isLoadingNYTimes}
@@ -112,5 +74,3 @@ function App() {
         </main>
     )
 }
-
-export default App
