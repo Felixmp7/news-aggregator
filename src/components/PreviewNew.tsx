@@ -27,7 +27,7 @@ export const PreviewNew = ({ imageSrc, imageAlt, title, source, date, onClick }:
                 )}
             </main>
         </DrawerTrigger>
-        <footer className="flex justify-between items-center">
+        <footer className="flex mt-2 justify-between items-center">
             <Badge variant="outline">{source}</Badge>
             <Badge variant="outline">{formatDate(date)}</Badge>
         </footer>
