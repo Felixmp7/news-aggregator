@@ -11,11 +11,11 @@ import {
     DrawerTitle
 } from "@/components/ui/drawer"
 import { formatDate } from "@/lib/utils"
-import { NewsapiArticle } from "@/models/newsapi.types"
+import { Article } from "@/models/newsaggregator.types"
 import { LabelValuePair } from "./LabelValuePair"
 
 interface Props {
-    articleSelected: NewsapiArticle | undefined
+    articleSelected: Article | undefined
 }
 
 export function ArticleDrawer({ articleSelected }: Props) {
@@ -35,12 +35,12 @@ export function ArticleDrawer({ articleSelected }: Props) {
                         href={articleSelected?.url}
                         className="ml-auto flex text-sm items-center gap-2 font-medium text-neutral-500 hover:text-indigo-800 hover:underline" target="_blank" rel="noreferrer"
                     >
-                        continue reading
+                        Read the full article
                         <ExternalLink className="size-4" />
                     </a>
                     <div className="text-neutral-700 text-sm mt-auto">
                         <LabelValuePair label="by" value={articleSelected?.author ?? 'Anonymous'} />
-                        <LabelValuePair label="source" value={articleSelected?.source.name ?? 'Unknown'} />
+                        <LabelValuePair label="source" value={articleSelected?.source ?? 'Unknown'} />
                         <span
                             className="block text-neutral-700"
                         >

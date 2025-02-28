@@ -11,14 +11,16 @@ import { Input } from '@/components/ui/input'
 import { useDateRangePicker } from '@/hooks/useDateRangePicker'
 import { useQuery } from '@/hooks/useQuery'
 import { useUrlSearchParams } from '@/hooks/useUrlSearchParams'
-import type { NewsapiArticle } from '@/models/newsapi.types'
 import { getDataFromNewsApiSource } from "@/services/newsapi.service"
+import type { Article, Source } from './models/newsaggregator.types'
+import { getDataFromTheGuardiansApiSource } from './services/the-guardian.service'
 
 
 function App() {
-    const [articleSelected, setArticleSelected]= useState<NewsapiArticle>()
+    const [articleSelected, setArticleSelected]= useState<Article>()
     const [keywordValues, setKeywordValues]= useState('')
     const [category, setCategory] = useState('')
+    const [sourceSelected, setSourceSelected] = useState<Source>('news-api')
 
     const { dateRange, onChangeRange } = useDateRangePicker();
     const { search } = useUrlSearchParams({
@@ -27,17 +29,32 @@ function App() {
         category: category,
         dateRange: dateRange
     });
-    const { data, isLoading, fetch } = useQuery(getDataFromNewsApiSource)
+    const {
+        data: newsData,
+        isLoading: isLoadingNewsApi,
+        fetch: fetchNewsApi
+    } = useQuery(getDataFromNewsApiSource)
+
+    const {
+        data: guardianData,
+        isLoading: isLoadingGuardian,
+        fetch: fetchGuardians
+    } = useQuery(getDataFromTheGuardiansApiSource)
 
     const handleClickSearch = () => {
         search();
-        fetch()
+        if (sourceSelected === 'news-api') fetchNewsApi()
+        if (sourceSelected === 'guardian') fetchGuardians()
     }
+
+    const handleOnChangeSource = (source: Source) => setSourceSelected(source)
 
     const handleChangeKeywords = (keywords: string) => setKeywordValues(keywords)
     const onChangeCategory = (category: string) => setCategory(category)
 
-    const handleSelectArticle = (article: NewsapiArticle) => setArticleSelected(article)
+    const handleSelectArticle = (article: Article) => setArticleSelected(article)
+
+    const articles = sourceSelected === 'news-api' ? newsData?.articles : guardianData?.articles
 
     return (
         <main>
@@ -49,7 +66,7 @@ function App() {
                     onChange={(event) => handleChangeKeywords(event.target.value)}
                 />
                 <div className='flex items-center gap-5'>
-                    <SelectSource />
+                    <SelectSource value={sourceSelected} onChange={handleOnChangeSource} />
                     <Input
                         placeholder='Type a category or section'
                         value={category ?? ''}
@@ -61,8 +78,8 @@ function App() {
             </section>
             <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
                 <NewsGrid
-                    articles={data?.articles}
-                    isLoading={isLoading}
+                    articles={articles}
+                    isLoading={isLoadingNewsApi || isLoadingGuardian}
                     onSelectArticle={handleSelectArticle}
                 />
                 <ArticleDrawer articleSelected={articleSelected} />

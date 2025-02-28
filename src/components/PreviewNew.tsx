@@ -4,7 +4,7 @@ import { Badge } from "./ui/badge";
 import { DrawerTrigger } from "./ui/drawer";
 
 type Props = {
-    imageSrc: string | null;
+    imageSrc?: string;
     imageAlt: string;
     title: string;
     source: string;
