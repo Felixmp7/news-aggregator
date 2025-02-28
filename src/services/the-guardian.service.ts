@@ -2,7 +2,7 @@ import queryString from 'query-string';
 
 import { THE_GUARDIAN_API_BASE_URL } from '@/constants/index.constants';
 import { fetchDataSource, getCurrentParams } from '@/lib/utils';
-import { NewsAggregatorResponse } from '@/models/newsaggregator.types';
+import { NewsAggregatorResponse } from '@/models/news-aggregator.types';
 import { GuardianResponse } from '@/models/the-guardian.types';
 
 export const getDataFromTheGuardiansApiSource = async (): Promise<NewsAggregatorResponse> => {

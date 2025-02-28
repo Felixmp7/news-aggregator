@@ -1,6 +1,6 @@
 import type { DateRange } from "react-day-picker"
 
-import { Source } from "@/models/newsaggregator.types"
+import { Source } from "@/models/news-aggregator.types"
 
 const queryParams = new URLSearchParams(window.location.search)
 

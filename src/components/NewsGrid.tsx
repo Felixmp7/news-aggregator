@@ -1,4 +1,4 @@
-import { Article } from "@/models/newsaggregator.types";
+import { Article } from "@/models/news-aggregator.types";
 import { PreviewHeader } from "./PreviewHeader";
 import { PreviewNew } from "./PreviewNew";
 

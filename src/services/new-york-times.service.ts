@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { NEW_YORK_TIMES_API_KEY, NY_TIMES_API_BASE_URL } from '@/constants/index.constants';
 import { fetchDataSource, getCurrentParams } from '@/lib/utils';
 import { NewYorkTimesResponse } from '@/models/new-york-times.types';
-import { NewsAggregatorResponse } from '@/models/newsaggregator.types';
+import { NewsAggregatorResponse } from '@/models/news-aggregator.types';
 
 export const getDataFromNYTimesSource = async (): Promise<NewsAggregatorResponse> => {
     const { category, from, keywords } = getCurrentParams();

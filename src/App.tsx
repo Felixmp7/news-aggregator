@@ -12,7 +12,7 @@ import { useDateRangePicker } from '@/hooks/useDateRangePicker'
 import { useQuery } from '@/hooks/useQuery'
 import { useUrlSearchParams } from '@/hooks/useUrlSearchParams'
 import { getDataFromNewsApiSource } from "@/services/newsapi.service"
-import type { Article, Source } from './models/newsaggregator.types'
+import type { Article, Source } from './models/news-aggregator.types'
 import { getDataFromNYTimesSource } from './services/new-york-times.service'
 import { getDataFromTheGuardiansApiSource } from './services/the-guardian.service'
 
@@ -26,7 +26,7 @@ function App() {
     const { dateRange, onChangeRange } = useDateRangePicker();
     const { search } = useUrlSearchParams({
         keywords: keywordValues,
-        source: 'news-api',
+        source: sourceSelected,
         category: category,
         dateRange: dateRange
     });

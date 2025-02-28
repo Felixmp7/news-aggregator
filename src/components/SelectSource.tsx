@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Source } from "@/models/newsaggregator.types"
+import { Source } from "@/models/news-aggregator.types"
 
 interface Props {
     value: Source,

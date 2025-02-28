@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 import { NEWS_API_BASE_URL, NEWS_API_KEY } from "@/constants/index.constants";
 import { fetchDataSource, getCurrentParams } from '@/lib/utils';
-import { DateRangeString, NewsAggregatorResponse } from '@/models/newsaggregator.types';
+import { DateRangeString, NewsAggregatorResponse } from '@/models/news-aggregator.types';
 import { NewsapiResponse } from "@/models/newsapi.types";
 
 const MAX_MONTH_RANGE_DIFFERENCE = 1;
