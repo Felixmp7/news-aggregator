@@ -6,11 +6,17 @@ export type CommonQueryParams = {
 
 export type Article = {
     title: string
-    urlToImage: string
-    content: string
+    urlToImage?: string
+    content?: string
     description?: string
     url: string
     author?: string
     source: string
     publishedAt: string
+    category: string
+}
+
+export type NewsAggregatorResponse = {
+    status: string,
+    articles: Article[]
 }
