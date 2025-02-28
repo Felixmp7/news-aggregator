@@ -11,12 +11,13 @@ import { Source } from "@/models/newsaggregator.types"
 
 interface Props {
     value: Source,
+    className?: string
     onChange: (source: Source) => void
 }
 
-export const SelectSource = ({ value, onChange }: Props) => (
+export const SelectSource = ({ value, className, onChange }: Props) => (
     <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className={className}>
             <SelectValue placeholder="Select source" />
         </SelectTrigger>
         <SelectContent>

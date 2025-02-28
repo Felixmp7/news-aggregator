@@ -71,25 +71,35 @@ function App() {
     const articles = data[sourceSelected] ?? []
 
     return (
-        <main>
+        <main className='container mx-auto px-5'>
             <HeroTitle className='mb-40' />
-            <section className='flex items-center justify-between gap-20 container mx-auto mb-10'>
+            <section
+                className='grid grid-cols-1 sm:grid-cols-3 xl:flex xl:flex-wrap xl:items-center gap-5 mb-10'
+            >
+                <SelectSource
+                    className="w-full xl:w-[180px]"
+                    value={sourceSelected}
+                    onChange={handleOnChangeSource}
+                />
                 <Input
                     placeholder='Search by keyword...'
+                    className='w-full xl:w-[300px]'
                     value={keywordValues ?? ''}
                     onChange={(event) => handleChangeKeywords(event.target.value)}
                 />
-                <div className='flex items-center gap-5'>
-                    <SelectSource value={sourceSelected} onChange={handleOnChangeSource} />
-                    <Input
-                        placeholder='Type a category or section'
-                        className='w-[200px]'
-                        value={category ?? ''}
-                        onChange={(event) => onChangeCategory(event.target.value)}
-                    />
-                    <DateRangePicker date={dateRange} onChangeRange={onChangeRange} />
-                    <Button onClick={handleClickSearch}>Search</Button>
-                </div>
+                <Input
+                    placeholder='Type a category or section'
+                    className='w-full xl:w-[300px]'
+                    value={category ?? ''}
+                    onChange={(event) => onChangeCategory(event.target.value)}
+                />
+                <DateRangePicker className='col-span-1 sm:col-span-2 w-full xl:col-span-1 xl:w-[300px]' date={dateRange} onChangeRange={onChangeRange} />
+                <Button
+                    className='xl:ml-auto'
+                    onClick={handleClickSearch}
+                >
+                            Search
+                </Button>
             </section>
             <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
                 <NewsGrid
