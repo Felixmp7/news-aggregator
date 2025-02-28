@@ -1,4 +1,4 @@
-import { NewsapiArticle } from "@/models/newsapi.types";
+import { Article } from "@/models/newsaggregator.types";
 import { PreviewHeader } from "./PreviewHeader";
 import { PreviewNew } from "./PreviewNew";
 
@@ -6,8 +6,8 @@ const SKELETON_LIST = Array.from({ length: 9 }, (_, index) => index);
 
 interface Props {
     isLoading: boolean;
-    articles: NewsapiArticle[] | undefined;
-    onSelectArticle: (article: NewsapiArticle) => void
+    articles: Article[] | undefined;
+    onSelectArticle: (article: Article) => void
 }
 
 export const NewsGrid = ({ isLoading, articles, onSelectArticle}: Props) => (
@@ -33,7 +33,7 @@ export const NewsGrid = ({ isLoading, articles, onSelectArticle}: Props) => (
                             imageAlt={`Image for article: ${title}`}
                             title={title}
                             imageSrc={urlToImage}
-                            source={source.name}
+                            source={source}
                             date={publishedAt}
                             onClick={() => onSelectArticle({ title, source, urlToImage, publishedAt, ...rest })}
                         />
