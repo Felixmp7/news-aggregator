@@ -13,6 +13,7 @@ import { useQuery } from '@/hooks/useQuery'
 import { useUrlSearchParams } from '@/hooks/useUrlSearchParams'
 import { getDataFromNewsApiSource } from "@/services/newsapi.service"
 import type { Article, Source } from './models/newsaggregator.types'
+import { getDataFromNYTimesSource } from './services/new-york-times.service'
 import { getDataFromTheGuardiansApiSource } from './services/the-guardian.service'
 
 
@@ -41,10 +42,17 @@ function App() {
         fetch: fetchGuardians
     } = useQuery(getDataFromTheGuardiansApiSource)
 
+    const {
+        data: nyTimesData,
+        isLoading: isLoadingNYTimes,
+        fetch: fetchNYTimes
+    } = useQuery(getDataFromNYTimesSource)
+
     const handleClickSearch = () => {
         search();
         if (sourceSelected === 'news-api') fetchNewsApi()
         if (sourceSelected === 'guardian') fetchGuardians()
+        if (sourceSelected === 'new-york-times') fetchNYTimes()
     }
 
     const handleOnChangeSource = (source: Source) => setSourceSelected(source)
@@ -54,7 +62,13 @@ function App() {
 
     const handleSelectArticle = (article: Article) => setArticleSelected(article)
 
-    const articles = sourceSelected === 'news-api' ? newsData?.articles : guardianData?.articles
+    const data = {
+        'news-api': newsData?.articles,
+        'guardian': guardianData?.articles,
+        'new-york-times': nyTimesData?.articles
+    }
+
+    const articles = data[sourceSelected] ?? []
 
     return (
         <main>
@@ -69,6 +83,7 @@ function App() {
                     <SelectSource value={sourceSelected} onChange={handleOnChangeSource} />
                     <Input
                         placeholder='Type a category or section'
+                        className='w-[200px]'
                         value={category ?? ''}
                         onChange={(event) => onChangeCategory(event.target.value)}
                     />
@@ -79,7 +94,7 @@ function App() {
             <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
                 <NewsGrid
                     articles={articles}
-                    isLoading={isLoadingNewsApi || isLoadingGuardian}
+                    isLoading={isLoadingNewsApi || isLoadingGuardian || isLoadingNYTimes}
                     onSelectArticle={handleSelectArticle}
                 />
                 <ArticleDrawer articleSelected={articleSelected} />
