@@ -24,7 +24,7 @@ export const SelectSource = ({ value, onChange }: Props) => (
                 <SelectLabel>Sources</SelectLabel>
                 <SelectItem value="news-api">News API</SelectItem>
                 <SelectItem value="guardian">The Guardian</SelectItem>
-                <SelectItem value="ny-times">New York Times</SelectItem>
+                <SelectItem value="new-york-times">New York Times</SelectItem>
             </SelectGroup>
         </SelectContent>
     </Select>
