@@ -7,9 +7,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Source } from "@/models/newsaggregator.types"
 
-export const SelectSource = () => (
-    <Select value="news-api" disabled>
+interface Props {
+    value: Source,
+    onChange: (source: Source) => void
+}
+
+export const SelectSource = ({ value, onChange }: Props) => (
+    <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select source" />
         </SelectTrigger>
