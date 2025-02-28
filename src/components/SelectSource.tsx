@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select"
 
 export const SelectSource = () => (
-    <Select>
+    <Select value="news-api" disabled>
         <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select source" />
         </SelectTrigger>
