@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const NewsGrid = ({ isLoading, articles, onSelectArticle}: Props) => (
-    <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 container mx-auto pb-10">
+    <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 pb-10">
         {(() => {
             if (isLoading) {
                 return SKELETON_LIST.map((index) => (
