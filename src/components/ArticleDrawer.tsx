@@ -11,7 +11,7 @@ import {
     DrawerTitle
 } from "@/components/ui/drawer"
 import { formatDate } from "@/lib/utils"
-import { NewsapiArticle } from "@/models/news.interfaces"
+import { NewsapiArticle } from "@/models/newsapi.types"
 import { LabelValuePair } from "./LabelValuePair"
 
 interface Props {
