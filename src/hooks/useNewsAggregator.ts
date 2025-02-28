@@ -48,7 +48,7 @@ export const useNewsAggregator = () => {
         return
     }
 
-    const handleOnChangeSource = (source: Source) => setSourceSelected(source)
+    const handleChangeSource = (source: Source) => setSourceSelected(source)
     const handleChangeKeywords = (keywords: string) => setKeywordValues(keywords)
     const handleChangeCategory = (category: string) => setCategory(category)
     const handleSelectArticle = (article?: Article) => setArticleSelected(article || undefined)
@@ -69,7 +69,7 @@ export const useNewsAggregator = () => {
         isLoadingNewsApi,
         isLoadingGuardian,
         isLoadingNYTimes,
-        handleOnChangeSource,
+        handleChangeSource,
         handleChangeKeywords,
         handleChangeCategory,
         handleChangeRange,
