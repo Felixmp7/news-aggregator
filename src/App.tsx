@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { ArticleDrawer } from '@/components/ArticleDrawer'
@@ -9,60 +8,61 @@ import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Drawer } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { NewsapiArticle } from '@/models/news.interfaces'
-import { getNews } from "@/services/newsapi.service"
+import { useDateRangePicker } from '@/hooks/useDateRangePicker'
+import { useQuery } from '@/hooks/useQuery'
+import { useUrlSearchParams } from '@/hooks/useUrlSearchParams'
+import type { NewsapiArticle } from '@/models/newsapi.types'
+import { getDataFromNewsApiSource } from "@/services/newsapi.service"
 
 
 function App() {
     const [articleSelected, setArticleSelected]= useState<NewsapiArticle>()
+    const [keywordValues, setKeywordValues]= useState('')
+    const [category, setCategory] = useState('')
 
-    const { data, isFetching, isLoading } = useQuery({
-        queryKey: ['news'],
-        queryFn: getNews
-    })
+    const { dateRange, onChangeRange } = useDateRangePicker();
+    const { search } = useUrlSearchParams({
+        keywords: keywordValues,
+        source: 'news-api',
+        category: category,
+        dateRange: dateRange
+    });
+    const { data, isLoading, fetch } = useQuery(getDataFromNewsApiSource)
+
+    const handleClickSearch = () => {
+        search();
+        fetch()
+    }
+
+    const handleChangeKeywords = (keywords: string) => setKeywordValues(keywords)
+    const onChangeCategory = (category: string) => setCategory(category)
 
     const handleSelectArticle = (article: NewsapiArticle) => setArticleSelected(article)
+
     return (
         <main>
             <HeroTitle className='mb-40' />
             <section className='flex items-center justify-between gap-20 container mx-auto mb-10'>
-                <Input placeholder='Search by keyword...' />
+                <Input
+                    placeholder='Search by keyword...'
+                    value={keywordValues ?? ''}
+                    onChange={(event) => handleChangeKeywords(event.target.value)}
+                />
                 <div className='flex items-center gap-5'>
-                    <Select>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Select a Category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectLabel>Categories</SelectLabel>
-                                <SelectItem value="business">Business</SelectItem>
-                                <SelectItem value="entertainment">Entertainment</SelectItem>
-                                <SelectItem value="general">General</SelectItem>
-                                <SelectItem value="health">Health</SelectItem>
-                                <SelectItem value="science">Science</SelectItem>
-                                <SelectItem value="sports">Sports</SelectItem>
-                                <SelectItem value="technology">Technology</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
                     <SelectSource />
-                    <DateRangePicker />
-                    <Button>Search</Button>
+                    <Input
+                        placeholder='Type a category or section'
+                        value={category ?? ''}
+                        onChange={(event) => onChangeCategory(event.target.value)}
+                    />
+                    <DateRangePicker date={dateRange} onChangeRange={onChangeRange} />
+                    <Button onClick={handleClickSearch}>Search</Button>
                 </div>
             </section>
             <Drawer open={!!articleSelected} onClose={() => setArticleSelected(undefined)}>
                 <NewsGrid
                     articles={data?.articles}
-                    isLoading={isFetching || isLoading}
+                    isLoading={isLoading}
                     onSelectArticle={handleSelectArticle}
                 />
                 <ArticleDrawer articleSelected={articleSelected} />
