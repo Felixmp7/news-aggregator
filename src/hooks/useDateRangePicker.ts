@@ -1,17 +1,13 @@
 import { useState } from "react"
 import { DateRange } from "react-day-picker"
 
-
 export const useDateRangePicker = () => {
-    const [dateRange, setDateRange] = useState<DateRange | undefined>({
-        from: new Date(),
-        to: new Date(),
-    })
+    const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
-    const onChangeRange = (dateRange: DateRange | undefined) => setDateRange(dateRange)
+    const handleChangeRange = (dateRange: DateRange | undefined) => setDateRange(dateRange || undefined)
 
     return {
         dateRange,
-        onChangeRange
+        handleChangeRange
     }
 }
