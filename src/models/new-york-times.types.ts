@@ -1,5 +1,3 @@
-import { CommonQueryParams } from "./newsaggregator.types";
-
 export type NewYorkTimesArticle = {
     abstract: string,
     snippet: string,
@@ -13,12 +11,6 @@ export type NewYorkTimesArticle = {
         original: string // Author
     }
 
-}
-
-export type NewYorkTimesParams = CommonQueryParams & {
-    'api-key': string
-    pub_date: string // Timestamp
-    section_name: string
 }
 
 export type NewYorkTimesResponse = {

@@ -1,25 +1,44 @@
+import { differenceInMonths } from 'date-fns';
 import queryString from 'query-string';
 
-import { NEWS_API_KEY } from "@/constants/api.constants";
-import { fetchDataSource, getCurrentParams } from '@/lib/utils';
-import { NewsAggregatorResponse } from '@/models/newsaggregator.types';
+import { NEWS_API_BASE_URL, NEWS_API_KEY } from "@/constants/index.constants";
+import { fetchDataSource } from '@/lib/utils';
+import { DateRangeString, NewsAggregatorQueryParams, NewsAggregatorResponse } from '@/models/news-aggregator.types';
 import { NewsapiResponse } from "@/models/newsapi.types";
 
-const baseAPIPath = "https://newsapi.org/v2/top-headlines?sortBy=popularity"
+const MAX_MONTH_RANGE_DIFFERENCE = 1;
 
-export const getDataFromNewsApiSource = async (): Promise<NewsAggregatorResponse> => {
-    const { category, from, keywords, to } = getCurrentParams();
+const getAValidDateRange = (from: string | null |undefined, to: string | null |undefined): DateRangeString | undefined => {
+    if (!from || !to) return;
+
+    const isValid = differenceInMonths(new Date(to), new Date(from)) < MAX_MONTH_RANGE_DIFFERENCE;
+    if (isValid) {
+        return {
+            from,
+            to
+        }
+    }
+
+    const now = new Date();
+    const oneMonthAgo = new Date(now.setMonth(now.getMonth() - MAX_MONTH_RANGE_DIFFERENCE));
+
+    return {
+        from: oneMonthAgo.toISOString(),
+        to: now.toISOString()
+    }
+}
+
+export const getDataFromNewsApiSource = async ({ category, from, to, keywords }: Partial<NewsAggregatorQueryParams>): Promise<NewsAggregatorResponse> => {
     const paramsForResource = queryString.stringify({
-        q: keywords ? `+${keywords}`: undefined,
+        q: keywords || undefined,
         category: category || undefined,
-        from: from || undefined,
-        to: to || undefined,
+        ...getAValidDateRange(from, to),
     })
 
-    const newsApiResponse = await fetchDataSource<NewsapiResponse>(`${baseAPIPath}&${paramsForResource}`, {
-        headers: { 'X-Api-Key': NEWS_API_KEY }
-    }
-    )
+    const newsApiResponse =
+        await fetchDataSource<NewsapiResponse>(`${NEWS_API_BASE_URL}&${paramsForResource}`, {
+            headers: { 'X-Api-Key': NEWS_API_KEY }
+        })
 
     return {
         status: newsApiResponse.status,

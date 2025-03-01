@@ -1,19 +1,21 @@
 import { useState } from 'react'
 
-export const useQuery = <T>(queryFn: () => Promise<T>) => {
+import { NewsAggregatorQueryParams } from '@/models/news-aggregator.types'
+
+export const useQuery = <T>(queryFn: (params: Partial<NewsAggregatorQueryParams>) => Promise<T>) => {
     const [data, setData] = useState<T | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
+    const [isError, setIsError] = useState(false)
 
-    const fetch = async () => {
+    const fetch = async (values: Partial<NewsAggregatorQueryParams>) => {
         setIsLoading(true);
-        setError(null)
+        setIsError(false)
         try {
-            const responseData = await queryFn()
+            const responseData = await queryFn(values)
             setData(responseData)
         } catch (error) {
-            console.log(error)
-            setError('Something went wrong')
+            console.error(error)
+            setIsError(true)
         } finally {
             setIsLoading(false)
         }
@@ -22,7 +24,7 @@ export const useQuery = <T>(queryFn: () => Promise<T>) => {
     return {
         data,
         isLoading,
-        error,
+        isError,
         fetch
     }
 }

@@ -1,4 +1,3 @@
-import { CommonQueryParams } from "./newsaggregator.types"
 
 export type NewsapiArticle = {
     author: string,
@@ -19,11 +18,3 @@ export type NewsapiResponse = {
     totalResults: number,
     articles: NewsapiArticle[]
 }
-
-export type NewsapiQueryParams =  CommonQueryParams & {
-    category: string,
-    from: string, // Timestamp
-    to: string, // Timestamp
-}
-
-export type NewsApiCategory = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology'
