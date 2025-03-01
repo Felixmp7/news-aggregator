@@ -1,4 +1,3 @@
-import { DateRange } from "react-day-picker";
 
 export type Source = "news-api" | "guardian" | "new-york-times";
 
@@ -30,11 +29,4 @@ export type NewsAggregatorQueryParams = {
     category: string | null
     from: string | null
     to: string | null
-}
-
-export type FilterForm = {
-    keywordValues: string
-    categorySelected: string
-    sourceSelected: Source
-    dateRangeSelected: DateRange
 }
