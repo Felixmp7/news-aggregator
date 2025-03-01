@@ -52,3 +52,18 @@ docker run -dp 3000:80 news-aggregator:v1.0
 ```
 
 This will build the Docker image and start the container. Your React app will be available at [http://localhost:3000](http://localhost:3000).
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env` file:
+
+### `.env`
+
+```plaintext
+VITE_NEWS_API_KEY=your_newsapi_key
+VITE_NEW_YORK_TIMES_API_KEY=your_nytimes_key
+```
+
+You can obtain the API keys from:
+- [News API](https://newsapi.org)
+- [New York Times Developer](https://developer.nytimes.com)
