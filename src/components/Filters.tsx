@@ -16,6 +16,7 @@ interface Props {
     handleChangeSource: (source: Source) => void
     handleChangeRange: (dateRange: DateRange | undefined) => void
     handleClickSearch: VoidFunction
+    handleSaveFiltersInLocalStorage: VoidFunction
 }
 
 export const Filters = ({
@@ -27,13 +28,14 @@ export const Filters = ({
     handleChangeKeywords,
     handleChangeCategory,
     handleChangeRange,
-    handleClickSearch
+    handleClickSearch,
+    handleSaveFiltersInLocalStorage
 }: Props) => {
     return (
         <>
             <SelectSource
                 className="w-full xl:w-[180px]"
-                value={sourceSelected}
+                value={sourceSelected ?? 'news-api'}
                 onChange={handleChangeSource}
             />
             <Input
@@ -58,6 +60,13 @@ export const Filters = ({
                 onClick={handleClickSearch}
             >
                     Search
+            </Button>
+            <Button variant="outline"
+            >
+                Clear
+            </Button>
+            <Button variant="ghost" onClick={handleSaveFiltersInLocalStorage}>
+                Save filters
             </Button>
         </>
     )
