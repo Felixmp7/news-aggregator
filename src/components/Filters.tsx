@@ -61,10 +61,6 @@ export const Filters = ({
             >
                     Search
             </Button>
-            <Button variant="outline"
-            >
-                Clear
-            </Button>
             <Button variant="ghost" onClick={handleSaveFiltersInLocalStorage}>
                 Save filters
             </Button>
