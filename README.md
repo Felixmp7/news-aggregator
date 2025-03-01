@@ -12,7 +12,7 @@ This repository provides a minimal setup to get a React application working with
 
 In the project directory, you can run:
 
-### `npm install`
+### `npm install --legacy-peer-deps`
 Install the dependencies.
 
 ### `npm run dev`
