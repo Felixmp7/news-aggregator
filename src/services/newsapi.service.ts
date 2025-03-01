@@ -2,17 +2,22 @@ import { differenceInMonths } from 'date-fns';
 import queryString from 'query-string';
 
 import { NEWS_API_BASE_URL, NEWS_API_KEY } from "@/constants/index.constants";
-import { fetchDataSource, getCurrentParams } from '@/lib/utils';
-import { DateRangeString, NewsAggregatorResponse } from '@/models/news-aggregator.types';
+import { fetchDataSource } from '@/lib/utils';
+import { DateRangeString, NewsAggregatorQueryParams, NewsAggregatorResponse } from '@/models/news-aggregator.types';
 import { NewsapiResponse } from "@/models/newsapi.types";
 
 const MAX_MONTH_RANGE_DIFFERENCE = 1;
 
-const getAValidDateRange = (from: string | null, to: string | null): DateRangeString | undefined => {
-    if (from === null || to === null) return;
+const getAValidDateRange = (from: string | null |undefined, to: string | null |undefined): DateRangeString | undefined => {
+    if (!from || !to) return;
 
-    const isValid = differenceInMonths(to, from) < MAX_MONTH_RANGE_DIFFERENCE;
-    if (isValid) return { from, to }
+    const isValid = differenceInMonths(new Date(to), new Date(from)) < MAX_MONTH_RANGE_DIFFERENCE;
+    if (isValid) {
+        return {
+            from,
+            to
+        }
+    }
 
     const now = new Date();
     const oneMonthAgo = new Date(now.setMonth(now.getMonth() - MAX_MONTH_RANGE_DIFFERENCE));
@@ -23,10 +28,9 @@ const getAValidDateRange = (from: string | null, to: string | null): DateRangeSt
     }
 }
 
-export const getDataFromNewsApiSource = async (): Promise<NewsAggregatorResponse> => {
-    const { category, from, keywords, to } = getCurrentParams();
+export const getDataFromNewsApiSource = async ({ category, from, to, keywords }: Partial<NewsAggregatorQueryParams>): Promise<NewsAggregatorResponse> => {
     const paramsForResource = queryString.stringify({
-        q: keywords ? `+${keywords}`: undefined,
+        q: keywords || undefined,
         category: category || undefined,
         ...getAValidDateRange(from, to),
     })
