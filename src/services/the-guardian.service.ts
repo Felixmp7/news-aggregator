@@ -1,12 +1,11 @@
 import queryString from 'query-string';
 
 import { THE_GUARDIAN_API_BASE_URL } from '@/constants/index.constants';
-import { fetchDataSource, getCurrentParams } from '@/lib/utils';
-import { NewsAggregatorResponse } from '@/models/news-aggregator.types';
+import { fetchDataSource } from '@/lib/utils';
+import { NewsAggregatorQueryParams, NewsAggregatorResponse } from '@/models/news-aggregator.types';
 import { GuardianResponse } from '@/models/the-guardian.types';
 
-export const getDataFromTheGuardiansApiSource = async (): Promise<NewsAggregatorResponse> => {
-    const { category, from, keywords, to } = getCurrentParams();
+export const getDataFromTheGuardiansApiSource = async ({ category, from, keywords, to }: Partial<NewsAggregatorQueryParams>): Promise<NewsAggregatorResponse> => {
     const paramsForResource = queryString.stringify({
         q: keywords || undefined,
         section: category || undefined,
