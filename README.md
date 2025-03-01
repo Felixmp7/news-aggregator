@@ -14,6 +14,11 @@ In the project directory, you can run:
 
 ### `npm install --legacy-peer-deps`
 Install the dependencies.
+The reason you need to run with the `--legacy-peer-deps` flag is to bypass peer dependency conflicts that may arise during the installation process. This flag tells npm to use the older peer dependency resolution algorithm, which is more lenient and allows the installation to proceed even if there are conflicting peer dependencies.
+
+In this case, the error message indicates a conflict between react-day-picker@8.10.1 and date-fns@4.1.0. Using the `--legacy-peer-deps` flag helps to resolve this conflict by ignoring the peer dependency requirements and proceeding with the installation.
+
+The main reason of this is for the use of shadcn with tailwind 4 and React 19. Check it out [here](https://ui.shadcn.com/docs/react-19)
 
 ### `npm run dev`
 Runs the app in the development mode.
