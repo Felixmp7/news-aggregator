@@ -1,3 +1,4 @@
+import NoResultsImage from "@/assets/no-results.svg";
 import { Article } from "@/models/news-aggregator.types";
 import { PreviewHeader } from "./PreviewHeader";
 import { PreviewNew } from "./PreviewNew";
@@ -40,7 +41,14 @@ export const NewsGrid = ({ isLoading, articles, onSelectArticle}: Props) => (
                     ))
             }
             return (
-                <>No results</>
+                <div className="col-span-full mt-10 flex flex-col items-center justify-center gap-20">
+                    <img src={NoResultsImage} alt="no results image" />
+                    <div className="flex flex-col gap-2 text-center text-neutral-500">
+                        <strong className="text-4xl">Oops,</strong>
+                        <span>There is no results for your search.</span>
+                        <span>Come on, try again!</span>
+                    </div>
+                </div>
             )
         })()}
     </section>
