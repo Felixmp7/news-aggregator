@@ -12,6 +12,9 @@ This repository provides a minimal setup to get a React application working with
 
 In the project directory, you can run:
 
+### `npm install`
+Install the dependencies.
+
 ### `npm run dev`
 Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
