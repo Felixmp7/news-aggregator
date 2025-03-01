@@ -10,10 +10,10 @@ export const App = () => {
     const {
         sourceSelected,
         keywordValues,
-        category,
+        categorySelected,
         articleSelected,
         articles,
-        dateRange,
+        dateRangeSelected,
         isLoadingNewsApi,
         isLoadingGuardian,
         isLoadingNYTimes,
@@ -22,7 +22,8 @@ export const App = () => {
         handleChangeKeywords,
         handleChangeCategory,
         handleClickSearch,
-        handleSelectArticle
+        handleSelectArticle,
+        handleSaveFiltersInLocalStorage,
     } = useNewsAggregator()
 
     return (
@@ -34,13 +35,14 @@ export const App = () => {
                 <Filters
                     sourceSelected={sourceSelected}
                     keywordValues={keywordValues}
-                    dateRange={dateRange}
-                    category={category}
+                    dateRange={dateRangeSelected}
+                    category={categorySelected}
                     handleChangeSource={handleChangeSource}
                     handleChangeKeywords={handleChangeKeywords}
                     handleChangeCategory={handleChangeCategory}
                     handleChangeRange={handleChangeRange}
                     handleClickSearch={handleClickSearch}
+                    handleSaveFiltersInLocalStorage={handleSaveFiltersInLocalStorage}
                 />
             </section>
             <Drawer open={!!articleSelected} onClose={handleSelectArticle}>
