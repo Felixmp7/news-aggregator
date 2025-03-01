@@ -56,7 +56,7 @@ docker build . -t "news-aggregator:v1.0"
 ### Run the Docker container
 
 ```sh
-docker run -dp 3000:80 news-aggregator:v1.0
+docker run -dp 3000:3000 news-aggregator:v1.0
 ```
 
 This will build the Docker image and start the container. Your React app will be available at [http://localhost:3000](http://localhost:3000).
