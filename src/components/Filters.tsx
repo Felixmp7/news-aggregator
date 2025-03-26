@@ -67,7 +67,7 @@ export const Filters = ({
                 Save filters
             </Button>
             <Button variant="ghost" onClick={clearFilters}>
-                Reset
+                Clear filters
             </Button>
         </>
     )
