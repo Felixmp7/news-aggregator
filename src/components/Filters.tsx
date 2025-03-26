@@ -63,7 +63,7 @@ export const Filters = ({
             >
                     Search
             </Button>
-            <Button variant="ghost" onClick={handleSaveFiltersInLocalStorage}>
+            <Button variant="outline" onClick={handleSaveFiltersInLocalStorage}>
                 Save filters
             </Button>
             <Button variant="ghost" onClick={clearFilters}>
