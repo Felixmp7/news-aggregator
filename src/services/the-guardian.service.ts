@@ -12,17 +12,27 @@ export const getDataFromTheGuardiansApiSource = async ({ category, from, keyword
         "from-date": from || undefined,
         "to-date": to || undefined,
     })
-    const { response } = await fetchDataSource<GuardianResponse>(`${THE_GUARDIAN_API_BASE_URL}&${paramsForResource}`)
 
-    return {
-        status: response.status,
-        articles: response.results.map(article => ({
-            title: article.webTitle,
-            description: 'The description of this article is not available',
-            source: 'The Guardian',
-            url: article.webUrl,
-            publishedAt: article.webPublicationDate,
-            category: article.sectionName || category || 'general'
-        }))
+    try {
+        const { response } =
+            await fetchDataSource<GuardianResponse>(`${THE_GUARDIAN_API_BASE_URL}&${paramsForResource}`)
+
+        return {
+            status: response.status,
+            articles: response.results.map(article => ({
+                title: article.webTitle,
+                description: 'The description of this article is not available',
+                source: 'The Guardian',
+                url: article.webUrl,
+                publishedAt: article.webPublicationDate,
+                category: article.sectionName || category || 'general'
+            }))
+        }
+    } catch (error) {
+        return {
+            status: 'error',
+            articles: [],
+            error: error as Error,
+        }
     }
 }
