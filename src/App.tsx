@@ -1,6 +1,6 @@
 import { ArticleDrawer } from '@/components/ArticleDrawer'
 import { HeroTitle } from '@/components/HeroTitle'
-import { NewsGrid } from '@/components/NewsGrid'
+import { NewsFeed } from '@/components/NewsFeed'
 import { Drawer } from '@/components/ui/drawer'
 import { useNewsAggregator } from '@/hooks/useNewsAggregator'
 import { Filters } from './components/Filters'
@@ -13,6 +13,7 @@ export const App = () => {
         categorySelected,
         articleSelected,
         articles,
+        isNothingFetched,
         dateRangeSelected,
         isLoadingNewsApi,
         isLoadingGuardian,
@@ -48,11 +49,14 @@ export const App = () => {
                 />
             </section>
             <Drawer open={!!articleSelected} onClose={handleSelectArticle}>
-                <NewsGrid
-                    articles={articles}
-                    isLoading={isLoadingNewsApi || isLoadingGuardian || isLoadingNYTimes}
-                    onSelectArticle={handleSelectArticle}
-                />
+                <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 pb-10">
+                    <NewsFeed
+                        articles={articles}
+                        isNothingFetched={isNothingFetched}
+                        isLoading={isLoadingNewsApi || isLoadingGuardian || isLoadingNYTimes}
+                        onSelectArticle={handleSelectArticle}
+                    />
+                </section>
                 <ArticleDrawer articleSelected={articleSelected} />
             </Drawer>
         </main>
