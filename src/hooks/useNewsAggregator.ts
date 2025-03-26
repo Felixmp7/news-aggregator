@@ -89,9 +89,9 @@ export const useNewsAggregator = () => {
     }
 
     const dataSource: Record<Source, Article[] | undefined> = {
-        'news-api': newsData?.articles,
-        'guardian': guardianData?.articles,
-        'new-york-times': nyTimesData?.articles
+        'news-api': newsData,
+        'guardian': guardianData,
+        'new-york-times': nyTimesData
     }
 
     useEffect(() => {
