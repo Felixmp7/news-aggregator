@@ -11,6 +11,7 @@ interface Props {
     keywordValues: string
     dateRange: DateRange | undefined
     category: string
+    clearFilters: VoidFunction
     handleChangeKeywords: (value: string) => void
     handleChangeCategory: (value: string) => void
     handleChangeSource: (source: Source) => void
@@ -29,6 +30,7 @@ export const Filters = ({
     handleChangeCategory,
     handleChangeRange,
     handleClickSearch,
+    clearFilters,
     handleSaveFiltersInLocalStorage
 }: Props) => {
     return (
@@ -63,6 +65,9 @@ export const Filters = ({
             </Button>
             <Button variant="ghost" onClick={handleSaveFiltersInLocalStorage}>
                 Save filters
+            </Button>
+            <Button variant="ghost" onClick={clearFilters}>
+                Reset
             </Button>
         </>
     )
