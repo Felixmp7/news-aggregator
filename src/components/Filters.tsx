@@ -11,6 +11,7 @@ interface Props {
     keywordValues: string
     dateRange: DateRange | undefined
     category: string
+    clearFilters: VoidFunction
     handleChangeKeywords: (value: string) => void
     handleChangeCategory: (value: string) => void
     handleChangeSource: (source: Source) => void
@@ -29,6 +30,7 @@ export const Filters = ({
     handleChangeCategory,
     handleChangeRange,
     handleClickSearch,
+    clearFilters,
     handleSaveFiltersInLocalStorage
 }: Props) => {
     return (
@@ -51,7 +53,7 @@ export const Filters = ({
                 onChange={(event) => handleChangeCategory(event.target.value)}
             />
             <DateRangePicker
-                className='col-span-1 sm:col-span-2 w-full xl:col-span-1 xl:w-[300px]'
+                className='col-span-1 sm:col-span-3 w-full xl:col-span-1 xl:w-[300px]'
                 date={dateRange}
                 onChangeRange={handleChangeRange}
             />
@@ -61,8 +63,11 @@ export const Filters = ({
             >
                     Search
             </Button>
-            <Button variant="ghost" onClick={handleSaveFiltersInLocalStorage}>
+            <Button variant="outline" onClick={handleSaveFiltersInLocalStorage}>
                 Save filters
+            </Button>
+            <Button variant="ghost" onClick={clearFilters}>
+                Reset
             </Button>
         </>
     )

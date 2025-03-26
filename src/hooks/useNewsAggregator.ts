@@ -2,7 +2,7 @@ import queryString from 'query-string';
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
-import { getInitialValues, pushQueryParams, setQueryParams } from "@/lib/utils";
+import { deleteQueryParams, getInitialValues, pushQueryParams, setQueryParams } from "@/lib/utils";
 import { Article, NewsAggregatorQueryParams, Source } from "@/models/news-aggregator.types";
 import { getDataFromNYTimesSource } from "@/services/new-york-times.service";
 import { getDataFromNewsApiSource } from "@/services/newsapi.service";
@@ -78,6 +78,16 @@ export const useNewsAggregator = () => {
         fetchBySource(initialValues)
     }
 
+    const clearFilters = () => {
+        setSourceSelected('news-api')
+        setKeywordValues('')
+        setCategorySelected('')
+        localStorage.clear();
+        setDateRangeSelected(undefined)
+        deleteQueryParams()
+        pushQueryParams('')
+    }
+
     const dataSource: Record<Source, Article[] | undefined> = {
         'news-api': newsData?.articles,
         'guardian': guardianData?.articles,
@@ -105,6 +115,7 @@ export const useNewsAggregator = () => {
         isLoadingGuardian,
         isLoadingNYTimes,
         handleChangeSource,
+        clearFilters,
         handleChangeKeywords,
         handleChangeCategory,
         handleChangeRange,

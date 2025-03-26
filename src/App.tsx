@@ -17,6 +17,7 @@ export const App = () => {
         isLoadingNewsApi,
         isLoadingGuardian,
         isLoadingNYTimes,
+        clearFilters,
         handleChangeRange,
         handleChangeSource,
         handleChangeKeywords,
@@ -39,6 +40,7 @@ export const App = () => {
                     category={categorySelected}
                     handleChangeSource={handleChangeSource}
                     handleChangeKeywords={handleChangeKeywords}
+                    clearFilters={clearFilters}
                     handleChangeCategory={handleChangeCategory}
                     handleChangeRange={handleChangeRange}
                     handleClickSearch={handleClickSearch}
