@@ -13,8 +13,14 @@ export type NewsapiArticle = {
     urlToImage: string | null
 }
 
-export type NewsapiResponse = {
+export type NewsapiError = {
+    message: string
+}
+
+export type NewsapiSuccess = {
     status: string,
     totalResults: number,
     articles: NewsapiArticle[]
 }
+
+export type NewsapiResponse = NewsapiSuccess | NewsapiError
