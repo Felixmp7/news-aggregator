@@ -20,19 +20,22 @@ export const useNewsAggregator = () => {
     const {
         data: newsData,
         isLoading: isLoadingNewsApi,
-        fetch: fetchNewsApi
+        fetch: fetchNewsApi,
+        clearData: clearNewsData,
     } = useQuery(getDataFromNewsApiSource)
 
     const {
         data: guardianData,
         isLoading: isLoadingGuardian,
-        fetch: fetchGuardians
+        fetch: fetchGuardians,
+        clearData: clearGuardiansData,
     } = useQuery(getDataFromTheGuardiansApiSource)
 
     const {
         data: nyTimesData,
         isLoading: isLoadingNYTimes,
-        fetch: fetchNYTimes
+        fetch: fetchNYTimes,
+        clearData: clearNYTimesData,
     } = useQuery(getDataFromNYTimesSource)
 
     const handleChangeSource = (source: Source) => setSourceSelected(source)
@@ -84,10 +87,14 @@ export const useNewsAggregator = () => {
         setSourceSelected('news-api')
         setKeywordValues('')
         setCategorySelected('')
-        localStorage.clear();
         setDateRangeSelected(undefined)
         deleteQueryParams()
         pushQueryParams('')
+        setIsNothingFetched(true)
+        localStorage.clear();
+        clearNewsData();
+        clearGuardiansData();
+        clearNYTimesData();
     }
 
     const dataSource: Record<Source, Article[] | undefined> = {
