@@ -15,7 +15,8 @@ export type Article = {
 
 export type NewsAggregatorResponse = {
     status: string,
-    articles: Article[]
+    articles: Article[],
+    error?: Error
 }
 
 export type DateRangeString = {

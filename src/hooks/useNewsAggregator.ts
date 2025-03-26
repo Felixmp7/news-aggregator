@@ -10,6 +10,7 @@ import { getDataFromTheGuardiansApiSource } from "@/services/the-guardian.servic
 import { useQuery } from "./useQuery";
 
 export const useNewsAggregator = () => {
+    const [isNothingFetched, setIsNothingFetched] = useState(true)
     const [articleSelected, setArticleSelected]= useState<Article>()
     const [keywordValues, setKeywordValues]= useState('')
     const [categorySelected, setCategorySelected] = useState('')
@@ -41,6 +42,7 @@ export const useNewsAggregator = () => {
     const handleChangeRange = (dateRange: DateRange | undefined) => setDateRangeSelected(dateRange || undefined)
 
     const fetchBySource = (values: NewsAggregatorQueryParams) => {
+        setIsNothingFetched(false)
         if (sourceSelected === 'news-api') fetchNewsApi(values)
         if (sourceSelected === 'guardian') fetchGuardians(values)
         if (sourceSelected === 'new-york-times') fetchNYTimes(values)
@@ -89,9 +91,9 @@ export const useNewsAggregator = () => {
     }
 
     const dataSource: Record<Source, Article[] | undefined> = {
-        'news-api': newsData?.articles,
-        'guardian': guardianData?.articles,
-        'new-york-times': nyTimesData?.articles
+        'news-api': newsData,
+        'guardian': guardianData,
+        'new-york-times': nyTimesData
     }
 
     useEffect(() => {
@@ -110,6 +112,7 @@ export const useNewsAggregator = () => {
         categorySelected,
         dateRangeSelected,
         articleSelected,
+        isNothingFetched,
         articles: sourceSelected ? dataSource[sourceSelected] : [],
         isLoadingNewsApi,
         isLoadingGuardian,

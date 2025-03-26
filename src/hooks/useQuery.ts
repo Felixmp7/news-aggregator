@@ -1,30 +1,25 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
 
-import { NewsAggregatorQueryParams } from '@/models/news-aggregator.types'
+import { Article, NewsAggregatorQueryParams, NewsAggregatorResponse } from '@/models/news-aggregator.types'
 
-export const useQuery = <T>(queryFn: (params: Partial<NewsAggregatorQueryParams>) => Promise<T>) => {
-    const [data, setData] = useState<T | null>(null)
+export const useQuery = <T extends NewsAggregatorResponse>(queryFn: (params: Partial<NewsAggregatorQueryParams>) => Promise<T>) => {
+    const [data, setData] = useState<Article[] | undefined>()
     const [isLoading, setIsLoading] = useState(false)
-    const [isError, setIsError] = useState(false)
 
     const fetch = async (values: Partial<NewsAggregatorQueryParams>) => {
         setIsLoading(true);
-        setIsError(false)
-        try {
-            const responseData = await queryFn(values)
-            setData(responseData)
-        } catch (error) {
-            console.error(error)
-            setIsError(true)
-        } finally {
-            setIsLoading(false)
-        }
+        const responseData = await queryFn(values)
+
+        if (responseData.error) toast.error(responseData?.error.message || 'An error occurred')
+        else setData(responseData.articles)
+
+        setIsLoading(false)
     }
 
     return {
         data,
         isLoading,
-        isError,
         fetch
     }
 }
