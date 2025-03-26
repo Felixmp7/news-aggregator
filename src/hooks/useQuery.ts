@@ -17,9 +17,12 @@ export const useQuery = <T extends NewsAggregatorResponse>(queryFn: (params: Par
         setIsLoading(false)
     }
 
+    const clearData = () => setData(undefined)
+
     return {
         data,
         isLoading,
-        fetch
+        fetch,
+        clearData
     }
 }
