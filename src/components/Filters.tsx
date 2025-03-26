@@ -53,7 +53,7 @@ export const Filters = ({
                 onChange={(event) => handleChangeCategory(event.target.value)}
             />
             <DateRangePicker
-                className='col-span-1 sm:col-span-2 w-full xl:col-span-1 xl:w-[300px]'
+                className='col-span-1 sm:col-span-3 w-full xl:col-span-1 xl:w-[300px]'
                 date={dateRange}
                 onChangeRange={handleChangeRange}
             />
