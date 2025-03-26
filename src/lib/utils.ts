@@ -55,6 +55,15 @@ export const getInitialValues = () : NewsAggregatorQueryParams => {
     return valuesFromLocalStorage as unknown as NewsAggregatorQueryParams
 }
 
+export const deleteQueryParams = () => {
+    const queryParams = new URLSearchParams(window.location.search)
+    queryParams.delete('source')
+    queryParams.delete('keywords')
+    queryParams.delete('category')
+    queryParams.delete('from')
+    queryParams.delete('to')
+}
+
 export const setQueryParams = ({ source, keywords, category, from, to }: NewsAggregatorQueryParams) => {
     const queryParams = new URLSearchParams(window.location.search)
     queryParams.set('source', source ?? '')
@@ -70,7 +79,7 @@ export const fetchDataSource = async <T>(url: string, init?: RequestInit) => {
     return data as T
 }
 
-export const pushQueryParams = (searchParams: string) => {
-    const newUrl = `${window.location.pathname}?${searchParams}`
+export const pushQueryParams = (searchParams?: string) => {
+    const newUrl = `${window.location.pathname}${searchParams ? `?${searchParams}` : ''}`
     window.history.pushState({}, '', newUrl)
 }
